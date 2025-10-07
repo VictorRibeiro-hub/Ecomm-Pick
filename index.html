@@ -6,46 +6,41 @@
   <title>Online Picking Productivity Tracker - Integrated Layout</title>
   
   <!-- SheetJS Library for Excel export -->
-    <!-- SheetJS Library for Excel export -->
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
   <!-- FontAwesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <!-- Chart.js for dashboards -->
-  <!-- Chart.js for dashboards -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- DataLabels Plugin for Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- DataLabels Plugin for Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  <style>
     /* Global Reset and Body Styling */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background-color: #f5f5f5; color: #333; }
 
     /* Top Bar */
     .top-bar {
-  background-color: #d32f2f; /* Alterado para vermelho */
-  color: #fff;
-  padding: 15px 20px;
-  font-size: 26px;
-  font-weight: bold;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-    .top-bar .logo-container img { height: 50px; }
-    .top-bar > span { /* Título centralizado */
-      flex-grow: 1;
+      background-color: #d32f2f; /* Alterado para vermelho */
+      color: #fff;
+      padding: 15px 20px;
+      font-size: 26px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
-    /* Container para os botões Home e Gaps */
+    .top-bar .logo-container img { height: 50px; }
+    .top-bar > span { flex-grow: 1; }
     .tab-nav {
       display: flex;
       gap: 10px;
       align-items: center;
-      /* Posiciona os botões imediatamente à esquerda da informação do usuário */
     }
     .tab-btn {
       background: transparent;
@@ -63,12 +58,10 @@
       color: yellow;
       transition: opacity 0.3s;
     }
-    .tab-btn:hover .btn-text {
-      opacity: 1;
-    }
+    .tab-btn:hover .btn-text { opacity: 1; }
     .user-info {
-  font-weight: normal; /* Remove o bold */
-  font-size: 12px;     /* Ajuste o tamanho conforme necessário */
+      font-weight: normal;
+      font-size: 12px;
       opacity: 0.8;
     }
 
@@ -76,7 +69,7 @@
     .container {
       display: flex;
       position: absolute;
-      top: 70px; /* Espaço abaixo da top-bar */
+      top: 70px;
       bottom: 0;
       left: 0;
       right: 0;
@@ -121,165 +114,74 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       margin-top: 8px;
     }
-/* ========================= */
-/* Layout para card “dual”   */
-/* ========================= */
-.summary-card.dual {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 8px; /* igual às outras cards */
-}
-.summary-card.dual .summary-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-/* separador visual entre as metades */
-.summary-card.dual .summary-item:first-child {
-  border-right: 1px solid rgba(255,255,255,0.3);
-}
-/* ajuste o espaçamento interno se desejar */
-
-    .summary-number {
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 4px;
-      color: #ffc107;
+    .summary-card.dual {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 8px;
     }
+    .summary-card.dual .summary-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+    }
+    .summary-card.dual .summary-item:first-child {
+      border-right: 1px solid rgba(255,255,255,0.3);
+    }
+    .summary-number { font-size: 20px; font-weight: bold; margin-top: 4px; color: #ffc107; }
 
     /* Main Content Styling */
-.main-content {
-  margin-top: -5px;    /* sobe o conteúdo 5px acima do topo padrão */
-  margin-left: 1px;    /* recua 1px da borda esquerda */
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-    .content-area {
-      padding: 20px;
+    .main-content {
+      margin-top: -5px;
+      margin-left: 1px;
       flex: 1;
-      overflow-y: auto;
-      background-color: #fff;
+      display: flex;
+      flex-direction: column;
     }
+    .content-area { padding: 20px; flex: 1; overflow-y: auto; background-color: #fff; }
 
-    /* Tabela de Produtividade */
+    /* Tabelas */
     table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 5px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    word-wrap: break-word;
-    line-height: 1.3;
-  }
+      width: 100%; border-collapse: collapse; margin-top: 5px; background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 5px; text-align: center; border: 1px solid #ddd; word-wrap: break-word; line-height: 1.3;
+    }
+    #productivityTable th:nth-child(8) { width: 180px; }
+    #productivityTable td:nth-child(8) {
+      max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #productivityTable tbody td, #gapsTable tbody td { font-size: 14px; }
 
-  /* ← Cole AQUI, logo após essas regras: */
-  /* Ajuste para coluna “Performance” (8ª) */
-  #productivityTable th:nth-child(8) {
-    width: 180px;
-  }
-  #productivityTable td:nth-child(8) {
-    max-width: 180px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-
-/* Apenas os dados da tabela (td do tbody) terão a fonte reduzida */
-#productivityTable tbody td {
-  font-size: 14px;
-}
-/* Se quiser aplicar também na tabela gaps, utilize: */
-#gapsTable tbody td {
-  font-size: 14px;
-}
-   /* Regras que você já tinha */
-th {
-  background-color: #000; /* Agora em preto, como da DHL */
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-/* ↓ Novo: fonte menor só no cabeçalho principal das tabelas */
-#productivityTable thead tr:first-child th,
-#gapsTable          thead tr:first-child th {
-  font-size: 14px;       /* ajuste o valor que preferir (ex.: 0.75rem) */
-}
+    th {
+      background-color: #000; color: white; position: sticky; top: 0; z-index: 2;
+    }
+    #productivityTable thead tr:first-child th,
+    #gapsTable thead tr:first-child th { font-size: 14px; }
 
     tbody tr:hover { background-color: #f1f1f1; }
 
-    /* Estilização para a linha de filtros integrada */
     .filter-row input, .filter-row select {
-      width: 90%;
-      padding: 5px;
-      font-size: 12px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
+      width: 90%; padding: 5px; font-size: 12px; border: 1px solid #ccc; border-radius: 3px;
     }
 
-    /* Scrollbar para a content-area */
     .content-area::-webkit-scrollbar { width: 8px; }
-    .content-area::-webkit-scrollbar-thumb {
-      background-color: #d32f2f;
-      border-radius: 5px;
-    }
-    .content-area::-webkit-scrollbar-thumb:hover {
-      background-color: #a72727;
-    }
+    .content-area::-webkit-scrollbar-thumb { background-color: #d32f2f; border-radius: 5px; }
+    .content-area::-webkit-scrollbar-thumb:hover { background-color: #a72727; }
 
-    /* Classes de performance (conforme lógica original) */
     .performance-well-done { color: #28a745; font-weight: bold; }
     .performance-poor { color: #dc3545; font-weight: bold; }
     .performance-almost-there { color: #ff8c00; font-weight: bold; }
     .performance-no-activity { color: #000; font-weight: bold; }
-  /* — suas regras já existentes — */
 
-    /* Tabelas */
-    table { /* ... */ }
-    th, td { /* ... */ }
-    #productivityTable thead th,
-    #gapsTable thead th {
-      /* já possui position: sticky; top: 0; etc. */
-    }
-    .filter-row input,
-    .filter-row select { /* ... */ }
-
-    /* ====== AQUI COLE, APÓS AS REGRAS DE TABLE ====== */
-
-    /* 2) Cabeçalho principal (linha 1 do thead) */
     #productivityTable thead tr:first-child th {
-      position: sticky;
-      top: 0;                       /* fixa no topo do container .main-content */
-      background-color: #000;
-      z-index: 3;                   /* acima da 2ª linha */
+      position: sticky; top: 0; background-color: #000; z-index: 3;
     }
-
-    /* 3) Linha de filtros (linha 2 do thead) */
     #productivityTable thead tr.filter-row th {
-      position: sticky;
-      top: 40px;                    /* ajuste para a altura real da linha 1 */
-      background-color: #000;
-      z-index: 2;
+      position: sticky; top: 40px; background-color: #000; z-index: 2;
     }
-/* Gaps no mesmo piso */
-.gap-same-floor td {
-  background-color: #d4edda;
-}
 
-/* Gaps entre pisos */
-.gap-cross-floor td {
-  background-color: #f8d7da;
-}
-
+    /* Gaps */
+    .gap-same-floor td { background-color: #d4edda; }
+    .gap-cross-floor td { background-color: #f8d7da; }
   </style>
 </head>
 <body>
@@ -289,87 +191,81 @@ th {
       <img src="dhl-logo.png" alt="DHL Logo" />
     </div>
     <span>Online Picking Productivity Tracker</span>
-    
-    <!-- Botões de Navegação (Home e Gaps) na Top Bar -->
+
     <div class="tab-nav">
-  <button class="tab-btn" id="homeTabBtn" data-target="homeTabContent" title="Home">
-    <i class="fa fa-home"></i><span class="btn-text">Home</span>
-  </button>
-  <button class="tab-btn" id="gapsTabBtn" data-target="gapsTabContent" title="Gaps">
-    <i class="fa fa-chart-bar"></i><span class="btn-text">Gaps</span>
-  </button>
-  <button class="tab-btn" id="dashboardTabBtn" data-target="dashboardTabContent" title="Dashboard">
-    <i class="fa fa-chart-pie"></i><span class="btn-text">Dashboard</span>
-  </button>
-</div>
-    
+      <button class="tab-btn" id="homeTabBtn" data-target="homeTabContent" title="Home">
+        <i class="fa fa-home"></i><span class="btn-text">Home</span>
+      </button>
+      <button class="tab-btn" id="gapsTabBtn" data-target="gapsTabContent" title="Gaps">
+        <i class="fa fa-chart-bar"></i><span class="btn-text">Gaps</span>
+      </button>
+      <button class="tab-btn" id="dashboardTabBtn" data-target="dashboardTabContent" title="Dashboard">
+        <i class="fa fa-chart-pie"></i><span class="btn-text">Dashboard</span>
+      </button>
+    </div>
+
     <div class="user-info">Victor Ribeiro (DHL Supply Chain)</div>
   </div>
 
-  <!-- Container com Sidebar e Main Content -->
+  <!-- Container -->
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <!-- Upload -->
       <label for="csvFileInput" id="fileLabel" class="file-label">
         <i class="fa fa-file"></i> Choose CSV File
       </label>
-      <input type="file" id="csvFileInput" accept=".csv" />
+      <!-- aceita csv e tsv -->
+      <input type="file" id="csvFileInput" accept=".csv,.tsv,text/csv,text/tab-separated-values" />
 
-      <!-- Download -->
       <button id="downloadReportBtnXLSX">
         <i class="fa fa-download"></i> Download XLSX
       </button>
       
-      <!-- Summary Cards (5 cards) -->
-<div class="summary-card">
-  Total User IDs
-  <div class="summary-number" id="userCountLabel">0</div>
-</div>
-<div class="summary-card">
-  T. User ID Lost
-  <div class="summary-number" id="userLostLabel">0.00</div>
-</div>
-<div class="summary-card">
-  T.W.H
-  <div class="summary-number" id="twhLabel">00:00:00</div>
-</div>
-<div class="summary-card">
-  Prod. Hours
-  <div class="summary-number" id="prodHoursLabel">00:00:00</div>
-</div>
-<div class="summary-card">
-  Total Gaps
-  <div class="summary-number" id="differenceLabel">00:00:00</div>
-</div>
+      <div class="summary-card">
+        Total User IDs
+        <div class="summary-number" id="userCountLabel">0</div>
+      </div>
+      <div class="summary-card">
+        T. User ID Lost
+        <div class="summary-number" id="userLostLabel">0.00</div>
+      </div>
+      <div class="summary-card">
+        T.W.H
+        <div class="summary-number" id="twhLabel">00:00:00</div>
+      </div>
+      <div class="summary-card">
+        Prod. Hours
+        <div class="summary-number" id="prodHoursLabel">00:00:00</div>
+      </div>
+      <div class="summary-card">
+        Total Gaps
+        <div class="summary-number" id="differenceLabel">00:00:00</div>
+      </div>
 
+      <div class="summary-card dual">
+        <div class="summary-item">
+          Total Picked
+          <div class="summary-number" id="totalPickedLabel">0</div>
+        </div>
+        <div class="summary-item">
+          Avg. Picked
+          <div class="summary-number" id="avgPickedLabel">0.00</div>
+        </div>
+      </div>
 
-<!-- Dual card: Total Picked & Avg. Picked -->
-<div class="summary-card dual">
-  <div class="summary-item">
-    Total Picked
-    <div class="summary-number" id="totalPickedLabel">0</div>
-  </div>
-  <div class="summary-item">
-    Avg. Picked
-    <div class="summary-number" id="avgPickedLabel">0.00</div>
-  </div>
-</div>
+      <div class="summary-card">
+        Avg. Performance
+        <div class="summary-number" id="avgPerformanceLabel">0.00%</div>
+      </div>
+    </nav>
 
-<!-- 2) Card único: Avg. Performance -->
-<div class="summary-card">
-  Avg. Performance
-  <div class="summary-number" id="avgPerformanceLabel">0.00%</div>
-</div>
-</nav>
     <!-- Main Content -->
     <div class="main-content">
       <div class="content-area">
-        <!-- Tabela com Filtros Integrados no Cabeçalho -->
+        <!-- Home -->
         <div id="homeTabContent">
           <table id="productivityTable">
             <thead>
-              <!-- Cabeçalho Principal -->
               <tr>
                 <th style="width: 100px;">Date</th>
                 <th>User ID</th>
@@ -386,17 +282,10 @@ th {
                 <th style="width: 15mm;">Avg. P. Hours</th>
                 <th>Pick</th>
               </tr>
-              <!-- Linha de Filtros Integrados -->
               <tr class="filter-row">
                 <th></th>
-                <th>
-                  <input type="text" id="filterUserId" placeholder="Filter by User ID" />
-                </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th><input type="text" id="filterUserId" placeholder="Filter by User ID" /></th>
+                <th></th><th></th><th></th><th></th><th></th>
                 <th>
                   <select id="filterPerformance">
                     <option value="">All</option>
@@ -406,11 +295,7 @@ th {
                     <option value="No Activity">No Activity</option>
                   </select>
                 </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th></th><th></th><th></th><th></th><th></th>
                 <th>
                   <select id="filterPick">
                     <option value="">All</option>
@@ -420,161 +305,88 @@ th {
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <!-- Linhas dinâmicas geradas pela lógica -->
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
 
-                        <!-- Aba Gaps -->
+        <!-- Gaps -->
         <div id="gapsTabContent" style="display: none;">
           <table id="gapsTable">
             <thead>
-  <tr>
-    <th style="width: 100px;">Date</th>
-    <th>User ID</th>
-    <th>Location IN</th>
-    <th>Location OUT</th>
-    <th>In Time</th>
-    <th>Out Time</th>
-    <th>Gap Time</th>
-    <th>Gap #</th>
-    <th>Same Floor?</th>
-  </tr>
-</thead>
-            <tbody>
-              <!-- Linhas dinâmicas geradas pela lógica -->
-            </tbody>
+              <tr>
+                <th style="width: 100px;">Date</th>
+                <th>User ID</th>
+                <th>Location IN</th>
+                <th>Location OUT</th>
+                <th>In Time</th>
+                <th>Out Time</th>
+                <th>Gap Time</th>
+                <th>Gap #</th>
+                <th>Same Floor?</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
           </table>
         </div>
 
-                <!-- Aba Dashboard -->
+        <!-- Dashboard -->
         <div id="dashboardTabContent" style="display: none;">
-
-          <!-- 1) Summary Cards do Dashboard -->
           <div class="dashboard-cards" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 0px;">
-            <div class="summary-card">
-              Total Users
-              <div class="summary-number" id="dashboardUserCount">0</div>
+            <div class="summary-card">Total Users <div class="summary-number" id="dashboardUserCount">0</div></div>
+            <div class="summary-card">Total Picks <div class="summary-number" id="dashboardTotalPicks">0</div></div>
+            <div class="summary-card">Avg. Picks/Hora <div class="summary-number" id="dashboardAvgPicksPerHour">0.00</div></div>
+            <div class="summary-card">Avg. Performance <div class="summary-number" id="dashboardAvgPerformance">0.00%</div></div>
+            <div class="summary-card">Total Gaps <div class="summary-number" id="dashboardTotalGaps">00:00:00</div></div>
+          </div>
+
+          <div class="dashboard-charts" style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div style="flex: 1; min-width: 300px; margin-left: 100px;">
+              <canvas id="performancePieChart" style="max-width:550px; max-height:550px;"></canvas>
             </div>
-            <div class="summary-card">
-              Total Picks
-              <div class="summary-number" id="dashboardTotalPicks">0</div>
-            </div>
-            <div class="summary-card">
-              Avg. Picks/Hora
-              <div class="summary-number" id="dashboardAvgPicksPerHour">0.00</div>
-            </div>
-            <div class="summary-card">
-              Avg. Performance
-              <div class="summary-number" id="dashboardAvgPerformance">0.00%</div>
-            </div>
-            <div class="summary-card">
-              Total Gaps
-              <div class="summary-number" id="dashboardTotalGaps">00:00:00</div>
+            <div style="flex: 1; min-width: 300px; margin-top: 0px;">
+              <div class="dashboard-bar-labels" style="display: flex; justify-content: center; gap: 12px; margin-bottom: 8px;">
+                <div class="summary-card" style="margin-top: 0; padding: 6px 12px;">Well Done:&nbsp;<span class="summary-number" id="countWellDone">0</span></div>
+                <div class="summary-card" style="margin-top: 0; padding: 6px 12px;">Almost There:&nbsp;<span class="summary-number" id="countAlmostThere">0</span></div>
+                <div class="summary-card" style="margin-top: 0; padding: 6px 12px;">Poor:&nbsp;<span class="summary-number" id="countPoor">0</span></div>
+                <div class="summary-card" style="margin-top: 0; padding: 6px 12px;">No Activity:&nbsp;<span class="summary-number" id="countNoActivity">0</span></div>
+              </div>
+              <canvas id="performanceBarChart"></canvas>
             </div>
           </div>
 
-                    <!-- 2) Gráficos do Dashboard -->
-<div class="dashboard-charts" style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
-
-  <!-- Gráfico de Pizza -->
-  <div style="flex: 1; min-width: 300px; margin-left: 100px;">
-    <canvas id="performancePieChart" style="max-width:550px; max-height:550px;"></canvas>
-  </div>
-
-  <!-- Gráfico de Barras + Labels -->
-  <div style="flex: 1; min-width: 300px; margin-top: 0px;">
-
-    <!-- 2.1) Painel de Labels do Bar Chart -->
-    <div class="dashboard-bar-labels" style="display: flex; justify-content: center; gap: 12px; margin-bottom: 8px;">
-      <div class="summary-card" style="margin-top: 0; padding: 6px 12px;">
-        Well Done:&nbsp;<span class="summary-number" id="countWellDone">0</span>
-      </div>
-      <div class="summary-card" style="margin-top: 0; padding: 6px 12px;">
-        Almost There:&nbsp;<span class="summary-number" id="countAlmostThere">0</span>
-      </div>
-      <div class="summary-card" style="margin-top: 0; padding: 6px 12px;">
-        Poor:&nbsp;<span class="summary-number" id="countPoor">0</span>
-      </div>
-      <div class="summary-card" style="margin-top: 0; padding: 6px 12px;">
-        No Activity:&nbsp;<span class="summary-number" id="countNoActivity">0</span>
-      </div>
-    </div>
-
-    <!-- Canvas do Gráfico de Barras -->
-    <canvas id="performanceBarChart"></canvas>
-  </div>
-
-</div>
-
-
-
-                     <!-- 3) Tabelas de Destaque -->
           <div class="dashboard-tables" style="display: flex; gap: 20px; flex-wrap: wrap;">
-
-            <!-- Top 5 Performers -->
             <div style="flex: 1; min-width: 200px;">
               <h4>Top 5 Performers</h4>
               <table id="topPerformersTable" class="dashboard-table">
-                <thead>
-                  <tr>
-                    <th>User ID</th>
-                    <th>Performance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Linhas serão inseridas via JS -->
-                </tbody>
+                <thead><tr><th>User ID</th><th>Performance</th></tr></thead>
+                <tbody></tbody>
               </table>
             </div>
-
-            <!-- Top 5 Low -->
             <div style="flex: 1; min-width: 200px;">
               <h4>Top 5 Low</h4>
               <table id="topLowTable" class="dashboard-table">
-                <thead>
-                  <tr>
-                    <th>User ID</th>
-                    <th>Performance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Linhas serão inseridas via JS -->
-                </tbody>
+                <thead><tr><th>User ID</th><th>Performance</th></tr></thead>
+                <tbody></tbody>
               </table>
             </div>
-
-            <!-- Top 5 Gaps -->
             <div style="flex: 1; min-width: 200px;">
               <h4>Top 5 Gaps</h4>
               <table id="topGapsTable" class="dashboard-table">
-                <thead>
-                  <tr>
-                    <th>User ID</th>
-                    <th>Total Gap Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Linhas serão inseridas via JS -->
-                </tbody>
+                <thead><tr><th>User ID</th><th>Total Gap Time</th></tr></thead>
+                <tbody></tbody>
               </table>
             </div>
-
           </div>
-
-
-
         </div>
 
+      </div> <!-- content-area -->
+    </div> <!-- main-content -->
+  </div> <!-- container -->
 
-      </div> <!-- Fim content-area -->
-    </div> <!-- Fim main-content -->
-  </div> <!-- Fim container -->
-  <!-- JavaScript da Lógica (Inalterado) -->
+  <!-- JavaScript -->
   <script>
     /* ======================================================
-     * Configurações Globais para Online Picking Tracker
+     * Configurações Globais
      * ====================================================== */
     const trackerTarget = 82; // Target fixo de 82 unidades/hora
 
@@ -585,12 +397,10 @@ th {
       const [h, m, s] = time.split(':').map(Number);
       return (h || 0) * 3600 + (m || 0) * 60 + (s || 0);
     }
-
     function ensureTimeFormat(time) {
       const parts = time.split(':');
       return parts.length === 2 ? `${time}:00` : time;
     }
-
     function calculateSecondsDifference(start, end) {
       start = ensureTimeFormat(start.trim());
       end = ensureTimeFormat(end.trim());
@@ -600,80 +410,55 @@ th {
       if (diff < 0) diff += 24 * 3600;
       return diff;
     }
-
     function formatDecimalToTime(decimalHours) {
       let sign = "";
-      if (decimalHours < 0) {
-        sign = "-";
-        decimalHours = Math.abs(decimalHours);
-      }
+      if (decimalHours < 0) { sign = "-"; decimalHours = Math.abs(decimalHours); }
       const totalSeconds = Math.round(decimalHours * 3600);
       const hours = Math.floor(totalSeconds / 3600);
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       const seconds = totalSeconds % 3600 % 60;
-      return (
-        sign +
-        String(hours).padStart(2, '0') + ":" +
-        String(minutes).padStart(2, '0') + ":" +
-        String(seconds).padStart(2, '0')
-      );
+      return sign + String(hours).padStart(2, '0') + ":" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
     }
+    // Agora não reformatamos a data — vem pronta do CSV novo
+    function formatDate(date){ return date || ''; }
 
-    function formatDate(date) {
-      if (!date) return '';
-      const parts = date.split(/[^\d]/).filter(Boolean);
-      if (parts.length === 3) {
-        const [year, month, day] = parts.map(Number).sort((a, b) => a - b);
-        return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`;
-      }
-      return date;
-    }
-  
- // ==== Novo: mapeia prefixo de location para floor ====
+    // Mapear prefixo de location para floor
     function getFloor(location) {
       if (!location) return null;
       const loc = location.toUpperCase().trim();
-
-      // casos com prefixo de várias letras
       if (loc.startsWith('DROP'))   return 'ground';
       if (loc.startsWith('CONSOL')) return 'ground';
-
-      // prefixo de 1 letra
       const letter = loc.charAt(0);
       const floorMap = {
-        X: 'ground', Z: 'ground', A: 'ground',
-        E: 'ground', P: 'ground', F: 'ground',
+        X: 'ground', Z: 'ground', A: 'ground', E: 'ground', P: 'ground', F: 'ground',
         B: 'bFloor', V: 'bFloor',
         D: 'dFloor', C: 'dFloor',
         T: 'tFloor', H: 'tFloor'
       };
       return floorMap[letter] || 'unknown';
     }
-    // ==== fim getFloor ====
+
     /* ======================================================
-     * Funções de Troca de Aba
+     * Troca de Abas
      * ====================================================== */
     function showHomeTab() {
-  document.getElementById('homeTabContent').style.display = 'block';
-  document.getElementById('gapsTabContent').style.display = 'none';
-  document.getElementById('dashboardTabContent').style.display = 'none';
-}
-
-function showGapsTab() {
-  document.getElementById('homeTabContent').style.display = 'none';
-  document.getElementById('gapsTabContent').style.display = 'block';
-  document.getElementById('dashboardTabContent').style.display = 'none';
-}
-
-// ==== Novo: Função para a aba Dashboard ====
-function showDashboardTab() {
-  document.getElementById('homeTabContent').style.display = 'none';
-  document.getElementById('gapsTabContent').style.display = 'none';
-  document.getElementById('dashboardTabContent').style.display = 'block';
-}
+      document.getElementById('homeTabContent').style.display = 'block';
+      document.getElementById('gapsTabContent').style.display = 'none';
+      document.getElementById('dashboardTabContent').style.display = 'none';
+    }
+    function showGapsTab() {
+      document.getElementById('homeTabContent').style.display = 'none';
+      document.getElementById('gapsTabContent').style.display = 'block';
+      document.getElementById('dashboardTabContent').style.display = 'none';
+    }
+    function showDashboardTab() {
+      document.getElementById('homeTabContent').style.display = 'none';
+      document.getElementById('gapsTabContent').style.display = 'none';
+      document.getElementById('dashboardTabContent').style.display = 'block';
+    }
 
     /* ======================================================
-     * Atualização da Tabela Home
+     * Home Table
      * ====================================================== */
     function updateTable(dataMap) {
       const tableBody = document.querySelector('#productivityTable tbody');
@@ -709,64 +494,54 @@ function showDashboardTab() {
     }
 
     /* ======================================================
-     * Atualização da Tabela Gaps
+     * Gaps Table
      * ====================================================== */
     function updateGapsTable(dataMap) {
-  const gapsTableBody = document.querySelector('#gapsTable tbody');
-  gapsTableBody.innerHTML = '';
-  
-  Object.entries(dataMap).forEach(([userId, stats]) => {
-    if (stats.nGaps > 0 && stats.gapsList && stats.gapsList.length > 0) {
-      stats.gapsList.forEach((gapObj, index) => {
-  const gapTimeFormatted = formatDecimalToTime(gapObj.gapSec / 3600);
-  const gapMinutes = gapObj.gapSec / 60;
+      const gapsTableBody = document.querySelector('#gapsTable tbody');
+      gapsTableBody.innerHTML = '';
+      
+      Object.entries(dataMap).forEach(([userId, stats]) => {
+        if (stats.nGaps > 0 && stats.gapsList && stats.gapsList.length > 0) {
+          stats.gapsList.forEach((gapObj, index) => {
+            const gapTimeFormatted = formatDecimalToTime(gapObj.gapSec / 3600);
+            const gapMinutes = gapObj.gapSec / 60;
 
-  // cria a linha e aplica a classe correta de background
-  const row = document.createElement('tr');
-  row.classList.add(gapObj.sameFloor ? 'gap-same-floor' : 'gap-cross-floor');
+            const row = document.createElement('tr');
+            row.classList.add(gapObj.sameFloor ? 'gap-same-floor' : 'gap-cross-floor');
 
-  row.innerHTML = `
-  <td>${stats.date || ''}</td>
-  <td>${userId}</td>
-  <td>${gapObj.locationIn || ''}</td>
-  <td>${gapObj.locationOut || ''}</td>
-  <td>${gapObj.start || 'N/A'}</td>
-  <td>${gapObj.end || 'N/A'}</td>
-  <td>${gapTimeFormatted}</td>
-  <td>${index + 1}</td>
-  <td>${gapObj.sameFloor ? 'Yes' : 'No'}</td>
-`;
+            row.innerHTML = `
+              <td>${stats.date || ''}</td>
+              <td>${userId}</td>
+              <td>${gapObj.locationIn || ''}</td>
+              <td>${gapObj.locationOut || ''}</td>
+              <td>${gapObj.start || 'N/A'}</td>
+              <td>${gapObj.end || 'N/A'}</td>
+              <td>${gapTimeFormatted}</td>
+              <td>${index + 1}</td>
+              <td>${gapObj.sameFloor ? 'Yes' : 'No'}</td>
+            `;
 
-  // formata em bold/vermelho se ultrapassar os thresholds
-  const gapCell = row.querySelectorAll('td')[6];
-  if (gapObj.sameFloor) {
-    if (gapMinutes >= 7) {
-      gapCell.style.color = '#dc3545';
-      gapCell.style.fontWeight = 'bold';
+            const gapCell = row.querySelectorAll('td')[6];
+            if (gapObj.sameFloor) {
+              if (gapMinutes >= 7) { gapCell.style.color = '#dc3545'; gapCell.style.fontWeight = 'bold'; }
+            } else {
+              if (gapMinutes >= 12) { gapCell.style.color = '#dc3545'; gapCell.style.fontWeight = 'bold'; }
+            }
+
+            gapsTableBody.appendChild(row);
+          });
+        }
+      });
     }
-  } else {
-    if (gapMinutes >= 12) {
-      gapCell.style.color = '#dc3545';
-      gapCell.style.fontWeight = 'bold';
-    }
-  }
-
-  gapsTableBody.appendChild(row);
-});
-
-    }
-  });
-}
 
     /* ======================================================
-     * Atualização das Estatísticas
+     * Estatísticas Globais
      * ====================================================== */
     function updateStats(dataMap) {
   let sumWorkedHours = 0;
   let sumProdHours = 0;
   let totalPicked = 0;
 
-  // Acumula horas trabalhadas, horas produtivas e total de picks
   Object.values(dataMap).forEach(stats => {
     const hoursDecimal = timeToSeconds(stats.totalHours) / 3600;
     sumWorkedHours += hoursDecimal;
@@ -774,86 +549,64 @@ function showDashboardTab() {
     totalPicked += stats.qty;
   });
 
-  // Cálculo da difference entre horas trabalhadas e horas produtivas (mantido p/ User Lost)
-const difference = sumWorkedHours - sumProdHours;
+  // NOVO: Total Gaps passa a somar a coluna "Total Gaps" da Home (stats.totalGaps em horas decimais)
+  const sumGapsHours = Object.values(dataMap).reduce((acc, s) => acc + (s.totalGaps || 0), 0);
 
-// Soma total de Gaps (em horas) de todos os usuários
-let sumGapsHours = 0;
-Object.values(dataMap).forEach(stats => {
-  sumGapsHours += (stats.totalGaps || 0); // totalGaps já está em horas
-});
+  document.getElementById('twhLabel').textContent = formatDecimalToTime(sumWorkedHours);
+  document.getElementById('prodHoursLabel').textContent = formatDecimalToTime(sumProdHours);
+  // Mostra na label "Total Gaps"
+  document.getElementById('differenceLabel').textContent = formatDecimalToTime(sumGapsHours);
 
-// Atualiza labels existentes
-document.getElementById('twhLabel').textContent = formatDecimalToTime(sumWorkedHours);
-document.getElementById('prodHoursLabel').textContent = formatDecimalToTime(sumProdHours);
-// Agora o card mostra TOTAL GAPS em vez de Difference
-document.getElementById('differenceLabel').textContent = formatDecimalToTime(sumGapsHours);
+  const totalUsers = Object.keys(dataMap).length;
+  document.getElementById('userCountLabel').textContent = totalUsers;
 
-// Total de usuários e User ID Lost (mantém a lógica atual baseada em 'difference')
-const totalUsers = Object.keys(dataMap).length;
-document.getElementById('userCountLabel').textContent = totalUsers;
-const lostDecimal = difference / 7.5;
+  // Mantive "T. User ID Lost" baseado na diferença TWH-ProdHours (como já era).
+  // Se quiser que também use os Gaps, troca 'difference' por 'sumGapsHours' na linha abaixo.
+  const lostDecimal = sumGapsHours / 7.5;
 document.getElementById('userLostLabel').textContent = lostDecimal.toFixed(2);
 
 
-  // ===== Novos cálculos =====
-
-  // 1) Total Picked
   document.getElementById('totalPickedLabel').textContent = totalPicked;
 
-  // 2) Avg. Picked: totalPicked dividido por sumWorkedHours (unidades/hora)
-  const avgPickedPerHour = sumWorkedHours > 0
-    ? (totalPicked / sumWorkedHours)
-    : 0;
+  const avgPickedPerHour = sumWorkedHours > 0 ? (totalPicked / sumWorkedHours) : 0;
   document.getElementById('avgPickedLabel').textContent = avgPickedPerHour.toFixed(0);
 
-  // 3) Avg. Performance: média dos percentuais individuais
   let sumPerformance = 0;
   Object.values(dataMap).forEach(stats => {
     const hours = timeToSeconds(stats.totalHours) / 3600;
-    const perf = hours > 0
-      ? (stats.qty / (hours * trackerTarget)) * 100
-      : 0;
+    const perf = hours > 0 ? (stats.qty / (hours * trackerTarget)) * 100 : 0;
     sumPerformance += perf;
   });
-  const avgPerformance = totalUsers > 0
-    ? (sumPerformance / totalUsers)
-    : 0;
+  const avgPerformance = totalUsers > 0 ? (sumPerformance / totalUsers) : 0;
   document.getElementById('avgPerformanceLabel').textContent = avgPerformance.toFixed(2) + '%';
 }
 
+
     /* ======================================================
-     * Função de Filtragem para a Aba Home
+     * Filtros (Home)
      * ====================================================== */
     function applyFilters(dataMap) {
-  const performanceFilter = document.getElementById('filterPerformance').value;
-  const userIdFilter    = document.getElementById('filterUserId').value.toLowerCase();
-  const pickFilter      = document.getElementById('filterPick').value;
+      const performanceFilter = document.getElementById('filterPerformance').value;
+      const userIdFilter    = document.getElementById('filterUserId').value.toLowerCase();
+      const pickFilter      = document.getElementById('filterPick').value;
 
-  const filtered = Object.entries(dataMap).filter(([userId, stats]) => {
-    const matchesPerformance = !performanceFilter || stats.performance.includes(performanceFilter);
-    const matchesUserId      = !userIdFilter    || userId.toLowerCase().includes(userIdFilter);
-    const pickVal            = stats.hasMulti  ? 'Multi' : 'Single';
-    const matchesPick        = !pickFilter      || pickVal === pickFilter;
-    return matchesPerformance && matchesUserId && matchesPick;
-  });
+      const filtered = Object.entries(dataMap).filter(([userId, stats]) => {
+        const matchesPerformance = !performanceFilter || stats.performance.includes(performanceFilter);
+        const matchesUserId      = !userIdFilter    || userId.toLowerCase().includes(userIdFilter);
+        const pickVal            = stats.hasMulti  ? 'Multi' : 'Single';
+        const matchesPick        = !pickFilter      || pickVal === pickFilter;
+        return matchesPerformance && matchesUserId && matchesPick;
+      });
 
-  const filteredMap = Object.fromEntries(filtered);
+      const filteredMap = Object.fromEntries(filtered);
 
-  // Home
-  updateTable(filteredMap);
-  updateStats(filteredMap);
+      updateTable(filteredMap);
+      updateStats(filteredMap);
+      updateDashboard(filteredMap);
+      renderDashboardCharts(filteredMap);
+      renderDashboardTables(filteredMap);
+    }
 
-  // Dashboard
-  updateDashboard(filteredMap);
-  renderDashboardCharts(filteredMap);
-  renderDashboardTables(filteredMap);
-}
-
-
-    /* ======================================================
-     * Função para ajustar o tamanho da fonte nas células do XLSX
-     * ====================================================== */
     function setFontSize(sheet, size) {
       Object.keys(sheet).forEach(function(cell) {
         if(cell.startsWith('!')) return;
@@ -864,35 +617,25 @@ document.getElementById('userLostLabel').textContent = lostDecimal.toFixed(2);
     }
 
     /* ======================================================
-     * Lógica Principal e Eventos
+     * Eventos
      * ====================================================== */
     document.getElementById('csvFileInput').addEventListener('change', handleFileUpload);
     document.getElementById('downloadReportBtnXLSX').addEventListener('click', downloadExcelReport);
-    // Os botões Home e Gaps agora estão na top bar; os listeners abaixo garantem a alternância
     document.getElementById('homeTabBtn').addEventListener('click', showHomeTab);
     document.getElementById('gapsTabBtn').addEventListener('click', showGapsTab);
     document.getElementById('dashboardTabBtn').addEventListener('click', showDashboardTab);
-    // Eventos para os filtros (agora integrados na tabela)
+
     document.getElementById('filterPerformance').addEventListener('change', () => {
       const savedData = localStorage.getItem('onlinePickData');
-      if (savedData) {
-        const dataMap = JSON.parse(savedData);
-        applyFilters(dataMap);
-      }
+      if (savedData) applyFilters(JSON.parse(savedData));
     });
     document.getElementById('filterUserId').addEventListener('input', () => {
       const savedData = localStorage.getItem('onlinePickData');
-      if (savedData) {
-        const dataMap = JSON.parse(savedData);
-        applyFilters(dataMap);
-      }
+      if (savedData) applyFilters(JSON.parse(savedData));
     });
     document.getElementById('filterPick').addEventListener('change', () => {
       const savedData = localStorage.getItem('onlinePickData');
-      if (savedData) {
-        const dataMap = JSON.parse(savedData);
-        applyFilters(dataMap);
-      }
+      if (savedData) applyFilters(JSON.parse(savedData));
     });
 
     function handleFileUpload(event) {
@@ -904,425 +647,402 @@ document.getElementById('userLostLabel').textContent = lostDecimal.toFixed(2);
       };
       reader.readAsText(file);
     }
-// Popula dinamicamente os filtros de Performance e Pick
-function populateFilterOptions(dataMap) {
-  // Performance
-  const perfSelect = document.getElementById('filterPerformance');
-  perfSelect.innerHTML = '<option value="">All</option>';
-  const perfSet = new Set(
-    Object.values(dataMap).map(s => {
-      if (s.performance.includes('Well Done'))   return 'Well Done';
-      if (s.performance.includes('Almost There')) return 'Almost There';
-      if (s.performance.includes('Poor'))         return 'Poor';
-      return 'No Activity';
-    })
-  );
-  perfSet.forEach(label => {
-    const opt = document.createElement('option');
-    opt.value    = label;
-    opt.textContent = label;
-    perfSelect.appendChild(opt);
-  });
 
-  // Pick (Single vs Multi)
-  const pickSelect = document.getElementById('filterPick');
-  pickSelect.innerHTML = '<option value="">All</option>';
-  const pickSet = new Set(
-    Object.values(dataMap).map(s => s.hasMulti ? 'Multi' : 'Single')
-  );
-  pickSet.forEach(label => {
-    const opt = document.createElement('option');
-    opt.value    = label;
-    opt.textContent = label;
-    pickSelect.appendChild(opt);
-  });
-}
+    // Popula filtros dinâmicos
+    function populateFilterOptions(dataMap) {
+      const perfSelect = document.getElementById('filterPerformance');
+      perfSelect.innerHTML = '<option value="">All</option>';
+      const perfSet = new Set(
+        Object.values(dataMap).map(s => {
+          if (s.performance.includes('Well Done'))   return 'Well Done';
+          if (s.performance.includes('Almost There')) return 'Almost There';
+          if (s.performance.includes('Poor'))         return 'Poor';
+          return 'No Activity';
+        })
+      );
+      perfSet.forEach(label => {
+        const opt = document.createElement('option');
+        opt.value = label; opt.textContent = label;
+        perfSelect.appendChild(opt);
+      });
 
-
-    function processCSV(csvText) {
-      try {
-        const delimiter = csvText.includes(',') ? ',' : '\t';
-        const rows = csvText.split('\n').map(row => row.split(delimiter));
-
-        const dateFromFile = rows[3]?.[1]?.trim();
-        const formattedDate = formatDate(dateFromFile);
-
-        const dataMap = {};
-        const validEvents = {};
-        const allEvents = {};
-
-        // Ordena as linhas a partir da linha 5 pela coluna de tempo (índice 9)
-        const sortedRows = rows.slice(5).sort((a, b) => {
-          const timeA = a[9] || '';
-          const timeB = b[9] || '';
-          return timeA.localeCompare(timeB);
-        });
-
-        sortedRows.forEach(row => {
-          const userId = row[0]?.trim();
-          const qty = parseInt(row[5]?.trim(), 10) || 0;
-          const time = row[9]?.trim();
-          const location = row[7]?.trim(); // Coluna "location"
-
-          if (!userId || !time) return;
-
-          if (!dataMap[userId]) {
-            dataMap[userId] = {
-              qty: 0,
-              inTime: null,
-              outTime: null,
-              totalHours: 0,
-              performance: '',
-              performanceClass: '',
-              totalGaps: 0,
-              nGaps: 0,
-              date: formattedDate,
-              txnCount: 0,
-              locationIn: '',
-              locationOut: '',
-              gapsList: [],
-              hasMulti: false
-            };
-            validEvents[userId] = [];
-            allEvents[userId] = [];
-          }
-
-          dataMap[userId].qty += qty;
-          dataMap[userId].txnCount++;
-          if (qty > 1) {
-            dataMap[userId].hasMulti = true;
-          }
-          allEvents[userId].push({ time: time, location: location });
-          validEvents[userId].push({ time: time, location: location });
-
-          if (!dataMap[userId].inTime || time < dataMap[userId].inTime) {
-            dataMap[userId].inTime = time;
-            dataMap[userId].locationIn = location || '';
-          }
-          if (!dataMap[userId].outTime || time > dataMap[userId].outTime) {
-            dataMap[userId].outTime = time;
-            dataMap[userId].locationOut = location || '';
-          }
-        });
-
-        Object.keys(allEvents).forEach(userId => {
-          allEvents[userId] = allEvents[userId]
-            .filter((obj, i, arr) => arr.findIndex(o => o.time === obj.time) === i)
-            .sort((a, b) => a.time.localeCompare(b.time));
-        });
-        Object.keys(validEvents).forEach(userId => {
-          validEvents[userId] = validEvents[userId]
-            .filter((obj, i, arr) => arr.findIndex(o => o.time === obj.time) === i)
-            .sort((a, b) => a.time.localeCompare(b.time));
-        });
-
-        Object.keys(validEvents).forEach(userId => {
-          const events = validEvents[userId];
-          const userAll = allEvents[userId];
-          for (let i = 1; i < events.length; i++) {
-            const prevObj = events[i - 1];
-            const currObj = events[i];
-            const prev = prevObj.time;
-            const curr = currObj.time;
-            const diffSec = calculateSecondsDifference(prev, curr);
-const gapHours = diffSec / 3600;
-const intermediate = userAll.some(ev => ev.time > prev && ev.time < curr);
-
-// identifica pisos
-const prevFloor = getFloor(prevObj.location);
-const currFloor = getFloor(currObj.location);
-const sameFloor = prevFloor && currFloor && (prevFloor === currFloor);
-
-// define threshold: 5 min no mesmo piso, 10 min entre pisos
-const thresholdMin = sameFloor ? 5 : 10;
-const thresholdHours = thresholdMin / 60;
-
-// aplica threshold dinâmico
-if (gapHours >= thresholdHours && !intermediate) {
-  dataMap[userId].totalGaps += gapHours;
-  dataMap[userId].nGaps += 1;
-  dataMap[userId].gapsList.push({
-  gapSec: diffSec,
-  start: prev,
-  end: curr,
-  locationIn: prevObj.location,
-  locationOut: currObj.location,
- sameFloor: sameFloor    // marca se é no mesmo piso
-});
-
-}
- }
-  });
-
-        Object.keys(dataMap).forEach(userId => {
-          const data = dataMap[userId];
-          if (!data.inTime || !data.outTime) {
-            delete dataMap[userId];
-            return;
-          }
-          const totalHoursDecimal = calculateSecondsDifference(data.inTime, data.outTime) / 3600;
-          data.totalHours = formatDecimalToTime(totalHoursDecimal);
-
-          // cálculo do percentual de performance (0 se não houver horas válidas)
-const performance = data.qty > 0
-  ? (data.qty / (totalHoursDecimal * trackerTarget)) * 100
-  : 0;
-
-if (totalHoursDecimal <= 0 || performance === 0) {
-  data.performance      = "No Activity (0.00%)";
-  data.performanceClass = "performance-no-activity";
-} else if (performance >= 100) {
-  data.performance      = `Well Done (${performance.toFixed(2)}%)`;
-  data.performanceClass = "performance-well-done";
-} else if (performance >= 60 && performance < 100) {
-  data.performance      = `Almost There (${performance.toFixed(2)}%)`;
-  data.performanceClass = "performance-almost-there";
-} else {
-  data.performance      = `Poor (${performance.toFixed(2)}%)`;
-  data.performanceClass = "performance-poor";
-}
-  });
-
-        localStorage.setItem('onlinePickData', JSON.stringify(dataMap));
-        populateFilterOptions(dataMap);
-
-        updateTable(dataMap);
-        updateStats(dataMap);
-        updateGapsTable(dataMap);
-        updateDashboard(dataMap);
-        renderDashboardCharts(dataMap);
-        renderDashboardTables(dataMap);
-
-      } catch (error) {
-        console.error("Error processing CSV:", error);
-      }
+      const pickSelect = document.getElementById('filterPick');
+      pickSelect.innerHTML = '<option value="">All</option>';
+      const pickSet = new Set(Object.values(dataMap).map(s => s.hasMulti ? 'Multi' : 'Single'));
+      pickSet.forEach(label => {
+        const opt = document.createElement('option');
+        opt.value = label; opt.textContent = label;
+        pickSelect.appendChild(opt);
+      });
     }
 
-// ==== Novo: popula as Tabelas de Destaque no Dashboard ====
-function renderDashboardTables(dataMap) {
-  // Monta array com performance numérica e gap em segundos
-  const users = Object.entries(dataMap).map(([userId, s]) => {
-    const hours = timeToSeconds(s.totalHours) / 3600;
-    const perfNum = hours > 0 ? (s.qty / (hours * trackerTarget)) * 100 : 0;
-    return {
-      userId,
-      perfNum,
-      gapSec: s.totalGaps * 3600
-    };
-  });
+    // ===== Mapa do CSV novo (0-based): A=0, ..., M=12, Q=16, T=19, U=20, AL=37
+const COLS = {
+  userId: 37,       // AL -> User ID
+  qty: 16,          // Q  -> Update Qty
+  location: 12,     // M  -> From Location / Location ID
+  tranDate: 19,     // T  -> Transaction Date
+  tranTime: 20,     // U  -> Transaction Time
+  dataStartRow: 2   // dados começam na linha 3 (1-based)
+};
 
-  // Top 5 Performers (maior performance)
-  const topPerformers = [...users]
-    .sort((a, b) => b.perfNum - a.perfNum)
-    .slice(0, 5);
+// === Limpeza de célula: remove BOM, trims e aspas de borda ===
+function cleanCell(c) {
+  return String(c ?? '')
+    .replace(/^\uFEFF/, '')    // BOM
+    .trim()                    // espaços nas bordas
+    .replace(/^"(.*)"$/, '$1') // aspas duplas de borda
+    .replace(/^'(.*)'$/, '$1');// aspas simples de borda
+}
 
-  // Top 5 Low (menor performance)
-  const topLow = [...users]
-    .sort((a, b) => a.perfNum - b.perfNum)
-    .slice(0, 5);
+function processCSV(csvText) {
+  try {
+    // Prioriza TAB (TSV). Se não houver TAB e houver vírgula, usa ','
+    let delimiter = '\t';
+    if (!csvText.includes('\t') && csvText.includes(',')) delimiter = ',';
 
-  // Top 5 Gaps (maior gap)
-  const topGaps = [...users]
-    .sort((a, b) => b.gapSec - a.gapSec)
-    .slice(0, 5);
+    // Linhas -> colunas, limpando cada célula e descartando linhas vazias
+    const rows = csvText
+      .split(/\r?\n/)
+      .map(r => r.split(delimiter).map(cleanCell))
+      .filter(r => r.some(c => (c || '').trim() !== ''));
 
-  // Helper para preencher tabela
-  function fillTable(tableId, rows, cols) {
-    const tbody = document.getElementById(tableId).querySelector('tbody');
-    tbody.innerHTML = '';
-    rows.forEach(item => {
-      const tr = document.createElement('tr');
-      cols.forEach(col => {
-        const td = document.createElement('td');
-        td.textContent = item[col];
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
+    if (rows.length <= COLS.dataStartRow) {
+      throw new Error('Arquivo sem linhas de dados após o cabeçalho.');
+    }
+
+    const dataMap = {};
+    const validEvents = {};
+    const allEvents = {};
+
+    // Apenas a parte de dados
+    const dataRows = rows.slice(COLS.dataStartRow);
+
+    // Ordena por User ID e depois por horário (garante “ordem por User ID e Tempo”)
+    const sortedRows = dataRows.slice().sort((a, b) => {
+      const uA = (a[COLS.userId] || '').trim();
+      const uB = (b[COLS.userId] || '').trim();
+      if (uA !== uB) return uA.localeCompare(uB);
+      const tA = (a[COLS.tranTime] || '').trim();
+      const tB = (b[COLS.tranTime] || '').trim();
+      return tA.localeCompare(tB);
     });
+
+    // Agrega por usuário
+    sortedRows.forEach(row => {
+      const userId   = (row[COLS.userId]   || '').trim();
+      const qtyRaw   = (row[COLS.qty]      || '').trim();
+      const location = (row[COLS.location] || '').trim();
+      const tDate    = (row[COLS.tranDate] || '').trim();
+      const tTime    = (row[COLS.tranTime] || '').trim();
+
+      // qty robusto: aceita "1", "1.0", "1,0"
+      const qty = Number(qtyRaw.replace(',', '.')) || 0;
+
+      if (!userId || !tTime) return;
+
+      if (!dataMap[userId]) {
+        dataMap[userId] = {
+          qty: 0,
+          inTime: null,
+          outTime: null,
+          totalHours: 0,
+          performance: '',
+          performanceClass: '',
+          totalGaps: 0,
+          nGaps: 0,
+          date: tDate || '',
+          txnCount: 0,
+          locationIn: '',
+          locationOut: '',
+          gapsList: [],
+          hasMulti: false
+        };
+        validEvents[userId] = [];
+        allEvents[userId] = [];
+      }
+
+      // Data “do dia” (se vier vazia nas primeiras linhas, mantém a que já tem)
+      if (!dataMap[userId].date && tDate) dataMap[userId].date = tDate;
+
+      // Quantidade e contagem de transações
+      dataMap[userId].qty += qty;
+      dataMap[userId].txnCount++;
+      if (qty > 1) dataMap[userId].hasMulti = true;
+
+      // Eventos (para cálculo de gaps)
+      allEvents[userId].push({ time: tTime, location });
+      validEvents[userId].push({ time: tTime, location });
+
+      // In/Out time
+      if (!dataMap[userId].inTime || tTime < dataMap[userId].inTime) {
+        dataMap[userId].inTime = tTime;
+        dataMap[userId].locationIn = location || '';
+      }
+      if (!dataMap[userId].outTime || tTime > dataMap[userId].outTime) {
+        dataMap[userId].outTime = tTime;
+        dataMap[userId].locationOut = location || '';
+      }
+    });
+
+    // Dedup por horário e ordena tempos por usuário
+    Object.keys(allEvents).forEach(userId => {
+      allEvents[userId] = allEvents[userId]
+        .filter((obj, i, arr) => arr.findIndex(o => o.time === obj.time) === i)
+        .sort((a, b) => a.time.localeCompare(b.time));
+    });
+    Object.keys(validEvents).forEach(userId => {
+      validEvents[userId] = validEvents[userId]
+        .filter((obj, i, arr) => arr.findIndex(o => o.time === obj.time) === i)
+        .sort((a, b) => a.time.localeCompare(b.time));
+    });
+
+    // Cálculo de gaps com thresholds por piso (usa getFloor já existente)
+    Object.keys(validEvents).forEach(userId => {
+      const events = validEvents[userId];
+      const userAll = allEvents[userId];
+
+      for (let i = 1; i < events.length; i++) {
+        const prevObj = events[i - 1];
+        const currObj = events[i];
+        const prev = prevObj.time;
+        const curr = currObj.time;
+        const diffSec = calculateSecondsDifference(prev, curr);
+        const gapHours = diffSec / 3600;
+
+        // Se existe qualquer transação intermediária entre prev e curr, não é gap “puro”
+        const intermediate = userAll.some(ev => ev.time > prev && ev.time < curr);
+
+        // Pisos
+        const prevFloor = getFloor(prevObj.location);
+        const currFloor = getFloor(currObj.location);
+        const sameFloor = prevFloor && currFloor && (prevFloor === currFloor);
+
+        // Threshold: 5 min no mesmo piso, 10 min entre pisos
+        const thresholdMin = sameFloor ? 5 : 10;
+        const thresholdHours = thresholdMin / 60;
+
+        if (gapHours >= thresholdHours && !intermediate) {
+          dataMap[userId].totalGaps += gapHours;
+          dataMap[userId].nGaps += 1;
+          dataMap[userId].gapsList.push({
+            gapSec: diffSec,
+            start: prev,
+            end: curr,
+            locationIn: prevObj.location,
+            locationOut: currObj.location,
+            sameFloor
+          });
+        }
+      }
+    });
+
+    // Total Hours + Performance por usuário
+    Object.keys(dataMap).forEach(userId => {
+      const d = dataMap[userId];
+      if (!d.inTime || !d.outTime) {
+        delete dataMap[userId];
+        return;
+      }
+      const totalHoursDecimal = calculateSecondsDifference(d.inTime, d.outTime) / 3600;
+      d.totalHours = formatDecimalToTime(totalHoursDecimal);
+
+      const performance = (totalHoursDecimal > 0 && d.qty > 0)
+        ? (d.qty / (totalHoursDecimal * trackerTarget)) * 100
+        : 0;
+
+      if (totalHoursDecimal <= 0 || performance === 0) {
+        d.performance      = "No Activity (0.00%)";
+        d.performanceClass = "performance-no-activity";
+      } else if (performance >= 100) {
+        d.performance      = `Well Done (${performance.toFixed(2)}%)`;
+        d.performanceClass = "performance-well-done";
+      } else if (performance >= 60 && performance < 100) {
+        d.performance      = `Almost There (${performance.toFixed(2)}%)`;
+        d.performanceClass = "performance-almost-there";
+      } else {
+        d.performance      = `Poor (${performance.toFixed(2)}%)`;
+        d.performanceClass = "performance-poor";
+      }
+    });
+
+    // Persistência + refresh das views (mesmo fluxo de antes)
+    localStorage.setItem('onlinePickData', JSON.stringify(dataMap));
+    populateFilterOptions(dataMap);
+
+    updateTable(dataMap);
+    updateStats(dataMap);
+    updateGapsTable(dataMap);
+    updateDashboard(dataMap);
+    renderDashboardCharts(dataMap);
+    renderDashboardTables(dataMap);
+
+  } catch (error) {
+    console.error("Error processing CSV:", error);
+    alert('Falha ao processar o CSV: ' + error.message);
   }
-
-  // Preenche Top Performers
-  fillTable('topPerformersTable',
-    topPerformers.map(u => ({ userId: u.userId, Performance: u.perfNum.toFixed(2) + '%' })),
-    ['userId', 'Performance']);
-
-  // Preenche Top Low
-  fillTable('topLowTable',
-    topLow.map(u => ({ userId: u.userId, Performance: u.perfNum.toFixed(2) + '%' })),
-    ['userId', 'Performance']);
-
-  // Preenche Top Gaps
-  fillTable('topGapsTable',
-    topGaps.map(u => ({ userId: u.userId, 'Total Gap Time': formatDecimalToTime(u.gapSec / 3600) })),
-    ['userId', 'Total Gap Time']);
 }
-// ==== Novo: popula os cards do Dashboard ====
-function updateDashboard(dataMap) {
-  const totalUsers = Object.keys(dataMap).length;
-  const totalPicks = Object.values(dataMap).reduce((sum, s) => sum + s.qty, 0);
-  const sumWorkedHours = Object.values(dataMap)
-    .reduce((sum, s) => sum + (timeToSeconds(s.totalHours) / 3600), 0);
-  const sumGapsSec = Object.values(dataMap)
-    .reduce((sum, s) => sum + s.totalGaps * 3600, 0);
 
-  // Média de picks por hora
-  const avgPicksPerHour = sumWorkedHours > 0
-    ? (totalPicks / sumWorkedHours).toFixed(0)
-    : "0.00";
+    // Dashboard: Tabelas de destaque
+    function renderDashboardTables(dataMap) {
+      const users = Object.entries(dataMap).map(([userId, s]) => {
+        const hours = timeToSeconds(s.totalHours) / 3600;
+        const perfNum = hours > 0 ? (s.qty / (hours * trackerTarget)) * 100 : 0;
+        return { userId, perfNum, gapSec: s.totalGaps * 3600 };
+      });
 
-  // Média de performance
-  const sumPerf = Object.values(dataMap)
-    .reduce((sum, s) => {
-      const hours = timeToSeconds(s.totalHours) / 3600;
-      return sum + (hours > 0 ? (s.qty / (hours * trackerTarget)) * 100 : 0);
-    }, 0);
-  const avgPerf = totalUsers > 0
-    ? (sumPerf / totalUsers).toFixed(2) + "%"
-    : "0.00%";
+      const topPerformers = [...users].sort((a, b) => b.perfNum - a.perfNum).slice(0, 5);
+      const topLow        = [...users].sort((a, b) => a.perfNum - b.perfNum).slice(0, 5);
+      const topGaps       = [...users].sort((a, b) => b.gapSec - a.gapSec).slice(0, 5);
 
-  // Formata gap total em HH:MM:SS
-  const totalGapsTime = formatDecimalToTime(sumGapsSec / 3600);
+      function fillTable(tableId, rows, cols) {
+        const tbody = document.getElementById(tableId).querySelector('tbody');
+        tbody.innerHTML = '';
+        rows.forEach(item => {
+          const tr = document.createElement('tr');
+          cols.forEach(col => {
+            const td = document.createElement('td');
+            td.textContent = item[col];
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      }
 
-  document.getElementById('dashboardUserCount').textContent = totalUsers;
-  document.getElementById('dashboardTotalPicks').textContent = totalPicks;
-  document.getElementById('dashboardAvgPicksPerHour').textContent = avgPicksPerHour;
-  document.getElementById('dashboardAvgPerformance').textContent = avgPerf;
-  document.getElementById('dashboardTotalGaps').textContent = totalGapsTime;
-}
-// ==== Novo: desenha os gráficos do Dashboard com Chart.js ====
-function renderDashboardCharts(dataMap) {
-  // 1) Conta usuários por categoria de performance
-  const counts = {
-    'Well Done': 0,
-    'Almost There': 0,
-    'Poor': 0,
-    'No Activity': 0
-  };
-  Object.values(dataMap).forEach(s => {
-    if (s.performance.includes('Well Done'))       counts['Well Done']++;
-    else if (s.performance.includes('Almost There')) counts['Almost There']++;
-    else if (s.performance.includes('Poor'))         counts['Poor']++;
-    else                                            counts['No Activity']++;
-  });
+      fillTable('topPerformersTable',
+        topPerformers.map(u => ({ userId: u.userId, Performance: u.perfNum.toFixed(2) + '%' })),
+        ['userId', 'Performance']);
 
-  // ► Preenche os labels acima do Bar Chart
-  document.getElementById('countWellDone').textContent      = counts['Well Done'];
-  document.getElementById('countAlmostThere').textContent = counts['Almost There'];
-  document.getElementById('countPoor').textContent         = counts['Poor'];
-  document.getElementById('countNoActivity').textContent   = counts['No Activity'];
+      fillTable('topLowTable',
+        topLow.map(u => ({ userId: u.userId, Performance: u.perfNum.toFixed(2) + '%' })),
+        ['userId', 'Performance']);
 
-  // Monta arrays para os gráficos
-  const labels     = Object.keys(counts);
-  const dataCounts = labels.map(l => counts[l]);
+      fillTable('topGapsTable',
+        topGaps.map(u => ({ userId: u.userId, 'Total Gap Time': formatDecimalToTime(u.gapSec / 3600) })),
+        ['userId', 'Total Gap Time']);
+    }
 
-  // 2) Gráfico de Pizza (percentuais)
-  const pieCtx = document.getElementById('performancePieChart').getContext('2d');
-  if (window.performancePie) window.performancePie.destroy();
-  window.performancePie = new Chart(pieCtx, {
-    type: 'pie',
-    data: {
-      labels,
-      datasets: [{
-        data: dataCounts,
-        backgroundColor: [
-          '#28a745', // Well Done
-          '#ff8c00', // Almost There
-          '#dc3545', // Poor
-          '#6c757d'  // No Activity
-        ]
-      }]
-    },
-    options: {
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: function(ctx) {
-              const total = ctx.dataset.data.reduce((sum, v) => sum + v, 0);
-              const pct   = total ? (ctx.raw / total * 100).toFixed(2) : '0.00';
-              return `${ctx.label}: ${pct}%`;
-            }
-          }
+    // Dashboard: Cards
+    function updateDashboard(dataMap) {
+      const totalUsers = Object.keys(dataMap).length;
+      const totalPicks = Object.values(dataMap).reduce((sum, s) => sum + s.qty, 0);
+      const sumWorkedHours = Object.values(dataMap).reduce((sum, s) => sum + (timeToSeconds(s.totalHours) / 3600), 0);
+      const sumGapsSec = Object.values(dataMap).reduce((sum, s) => sum + s.totalGaps * 3600, 0);
+
+      const avgPicksPerHour = sumWorkedHours > 0 ? (totalPicks / sumWorkedHours).toFixed(0) : "0.00";
+
+      const sumPerf = Object.values(dataMap).reduce((sum, s) => {
+        const hours = timeToSeconds(s.totalHours) / 3600;
+        return sum + (hours > 0 ? (s.qty / (hours * trackerTarget)) * 100 : 0);
+      }, 0);
+      const avgPerf = totalUsers > 0 ? (sumPerf / totalUsers).toFixed(2) + "%" : "0.00%";
+
+      const totalGapsTime = formatDecimalToTime(sumGapsSec / 3600);
+
+      document.getElementById('dashboardUserCount').textContent = totalUsers;
+      document.getElementById('dashboardTotalPicks').textContent = totalPicks;
+      document.getElementById('dashboardAvgPicksPerHour').textContent = avgPicksPerHour;
+      document.getElementById('dashboardAvgPerformance').textContent = avgPerf;
+      document.getElementById('dashboardTotalGaps').textContent = totalGapsTime;
+    }
+
+    // Dashboard: Gráficos
+    function renderDashboardCharts(dataMap) {
+      const counts = { 'Well Done': 0, 'Almost There': 0, 'Poor': 0, 'No Activity': 0 };
+      Object.values(dataMap).forEach(s => {
+        if (s.performance.includes('Well Done'))        counts['Well Done']++;
+        else if (s.performance.includes('Almost There')) counts['Almost There']++;
+        else if (s.performance.includes('Poor'))         counts['Poor']++;
+        else                                             counts['No Activity']++;
+      });
+
+      document.getElementById('countWellDone').textContent    = counts['Well Done'];
+      document.getElementById('countAlmostThere').textContent = counts['Almost There'];
+      document.getElementById('countPoor').textContent        = counts['Poor'];
+      document.getElementById('countNoActivity').textContent  = counts['No Activity'];
+
+      const labels = Object.keys(counts);
+      const dataCounts = labels.map(l => counts[l]);
+
+      const pieCtx = document.getElementById('performancePieChart').getContext('2d');
+      if (window.performancePie) window.performancePie.destroy();
+      window.performancePie = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+          labels,
+          datasets: [{
+            data: dataCounts,
+            backgroundColor: ['#28a745', '#ff8c00', '#dc3545', '#6c757d']
+          }]
         },
-        legend: {
-          position: 'top',
-          labels: {
-            font:    { size: 12 },
-            boxWidth: 12,
-            padding:  10,
-            maxWidth: 1000,
-            generateLabels: function(chart) {
-              const d = chart.data, total = d.datasets[0].data.reduce((s,v)=>s+v,0);
-              return d.labels.map((lab,i)=>({
-                text:     `${lab} (${ total ? (d.datasets[0].data[i]/total*100).toFixed(2) : '0.00' }%)`,
-                fillStyle:d.datasets[0].backgroundColor[i],
-                hidden:   false,
-                index:    i
-              }));
+        options: {
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const total = ctx.dataset.data.reduce((sum, v) => sum + v, 0);
+                  const pct   = total ? (ctx.raw / total * 100).toFixed(2) : '0.00';
+                  return `${ctx.label}: ${pct}%`;
+                }
+              }
+            },
+            legend: {
+              position: 'top',
+              labels: {
+                font: { size: 12 },
+                boxWidth: 12,
+                padding: 10,
+                maxWidth: 1000,
+                generateLabels: function(chart) {
+                  const d = chart.data, total = d.datasets[0].data.reduce((s,v)=>s+v,0);
+                  return d.labels.map((lab,i)=>({
+                    text: `${lab} (${ total ? (d.datasets[0].data[i]/total*100).toFixed(2) : '0.00' }%)`,
+                    fillStyle: d.datasets[0].backgroundColor[i],
+                    hidden: false,
+                    index: i
+                  }));
+                }
+              }
             }
           }
         }
-      }
+      });
+
+      const barCtx = document.getElementById('performanceBarChart').getContext('2d');
+      if (window.performanceBar) window.performanceBar.destroy();
+      window.performanceBar = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Usuários',
+            data: dataCounts,
+            backgroundColor: ['#28a745', '#ff8c00', '#dc3545', '#6c757d']
+          }]
+        },
+        options: {
+          scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+        }
+      });
     }
-  });
 
-
-  // 3) Gráfico de Barras (contagem por categoria)
-const barCtx = document.getElementById('performanceBarChart').getContext('2d');
-if (window.performanceBar) window.performanceBar.destroy();
-window.performanceBar = new Chart(barCtx, {
-  type: 'bar',
-  data: {
-    labels,
-    datasets: [{
-      label: 'Usuários',
-      data: dataCounts,
-      backgroundColor: [
-        '#28a745', // Well Done
-        '#ff8c00', // Almost There
-        '#dc3545', // Poor
-        '#6c757d'  // No Activity
-      ]
-    }]
-  },
-  options: {
-    scales: {
-      x: { stacked: true },
-      y: { stacked: true, beginAtZero: true }
-    }
-  }
-});
-}
-
-// ==== Garante dashboard no load inicial (único window.onload) ====
-window.onload = function () {
-  const savedData = localStorage.getItem('onlinePickData');
-  if (!savedData) return;
-
-  const dataMap = JSON.parse(savedData);
-
-  // 1) popula os filtros
-  populateFilterOptions(dataMap);
-
-  // 2) atualiza a Home
-  updateTable(dataMap);
-  updateStats(dataMap);
-
-  // 3) atualiza a aba Gaps
-  updateGapsTable(dataMap);
-
-  // 4) atualiza o Dashboard
-  updateDashboard(dataMap);
-  renderDashboardCharts(dataMap);
-  renderDashboardTables(dataMap);
-};
-
+    // On load (se já houver dados salvos)
+    window.onload = function () {
+      const savedData = localStorage.getItem('onlinePickData');
+      if (!savedData) return;
+      const dataMap = JSON.parse(savedData);
+      populateFilterOptions(dataMap);
+      updateTable(dataMap);
+      updateStats(dataMap);
+      updateGapsTable(dataMap);
+      updateDashboard(dataMap);
+      renderDashboardCharts(dataMap);
+      renderDashboardTables(dataMap);
+    };
 
     function downloadExcelReport() {
       const savedData = localStorage.getItem('onlinePickData');
-      if (!savedData) {
-        alert('No data to download. Please upload a file first.');
-        return;
-      }
+      if (!savedData) { alert('No data to download. Please upload a file first.'); return; }
       
       const dataMap = JSON.parse(savedData);
       const header = ['Date', 'User ID', 'Qty', 'In Time', 'Out Time', 'Total Hours', 'Prod. Hours', 'Performance', 'Total Gaps', 'N. Gaps', 'Qty. Tnx', 'Gap vs Txn%', 'Avg. P. Hours', 'Pick'];
@@ -1340,67 +1060,33 @@ window.onload = function () {
         const pick = stats.hasMulti ? 'Multi' : 'Single';
         
         const row = [
-          date,
-          userId,
-          qty,
-          inTime,
-          outTime,
-          totalHours,
-          prodHours,
-          performance,
-          formatDecimalToTime(totalGaps),
-          nGaps,
-          txnCount,
-          gapTxnPercent,
-          avgPHours,
-          pick
+          date, userId, qty, inTime, outTime, totalHours, prodHours, performance,
+          formatDecimalToTime(totalGaps), nGaps, txnCount, gapTxnPercent, avgPHours, pick
         ];
         allData.push(row);
-        if (performance.includes('Well Done')) {
-          wellDoneData.push(row);
-        } else if (performance.includes('Almost There')) {
-          almostThereData.push(row);
-        } else if (performance.includes('Poor')) {
-          poorData.push(row);
-        }
+        if (performance.includes('Well Done'))      wellDoneData.push(row);
+        else if (performance.includes('Almost There')) almostThereData.push(row);
+        else if (performance.includes('Poor'))         poorData.push(row);
       });
       
-// 1) Atualiza o cabeçalho para incluir "Same Floor?"
-const gapsHeader = [
-  'Date',
-  'User ID',
-  'Location IN',
-  'Location OUT',
-  'In Time',
-  'Out Time',
-  'Gap Time',
-  'Gap #',
-  'Same Floor?'
-];
-const gapsData = [gapsHeader.slice()];
+      const gapsHeader = ['Date','User ID','Location IN','Location OUT','In Time','Out Time','Gap Time','Gap #','Same Floor?'];
+      const gapsData = [gapsHeader.slice()];
 
-Object.entries(dataMap).forEach(([userId, stats]) => {
-  if (stats.nGaps > 0 && stats.gapsList && stats.gapsList.length > 0) {
-    stats.gapsList.forEach((gapObj, index) => {
-      const gapTimeFormatted = formatDecimalToTime(gapObj.gapSec / 3600);
-      const sameFloorFlag = gapObj.sameFloor ? 'Yes' : 'No';
-
-      // 2) Monta a linha incluindo o valor de Same Floor? no final
-      const row = [
-        stats.date,
-        userId,
-        gapObj.locationIn || '',
-        gapObj.locationOut || '',
-        gapObj.start,
-        gapObj.end,
-        gapTimeFormatted,
-        index + 1,
-        sameFloorFlag
-      ];
-      gapsData.push(row);
-    });
-  }
-});
+      Object.entries(dataMap).forEach(([userId, stats]) => {
+        if (stats.nGaps > 0 && stats.gapsList && stats.gapsList.length > 0) {
+          stats.gapsList.forEach((gapObj, index) => {
+            const gapTimeFormatted = formatDecimalToTime(gapObj.gapSec / 3600);
+            const sameFloorFlag = gapObj.sameFloor ? 'Yes' : 'No';
+            const row = [
+              stats.date, userId,
+              gapObj.locationIn || '', gapObj.locationOut || '',
+              gapObj.start, gapObj.end,
+              gapTimeFormatted, index + 1, sameFloorFlag
+            ];
+            gapsData.push(row);
+          });
+        }
+      });
 
       const workbook = XLSX.utils.book_new();
       const wsAll = XLSX.utils.aoa_to_sheet(allData);
@@ -1409,10 +1095,8 @@ Object.entries(dataMap).forEach(([userId, stats]) => {
       const wsPoor = XLSX.utils.aoa_to_sheet(poorData);
       const wsGaps = XLSX.utils.aoa_to_sheet(gapsData);
 
-      setFontSize(wsAll, 11);
-      setFontSize(wsWellDone, 11);
-      setFontSize(wsAlmostThere, 11);
-      setFontSize(wsPoor, 11);
+      setFontSize(wsAll, 11); setFontSize(wsWellDone, 11);
+      setFontSize(wsAlmostThere, 11); setFontSize(wsPoor, 11);
       setFontSize(wsGaps, 11);
 
       XLSX.utils.book_append_sheet(workbook, wsAll, "All Data");
@@ -1435,9 +1119,9 @@ Object.entries(dataMap).forEach(([userId, stats]) => {
           const dataMap = JSON.parse(savedData);
           const filteredMap = {};
           Object.keys(dataMap).forEach(userId => {
-             if (userId.toLowerCase().includes(filterValue)) {
-               filteredMap[userId] = dataMap[userId];
-             }
+            if (userId.toLowerCase().includes(filterValue)) {
+              filteredMap[userId] = dataMap[userId];
+            }
           });
           updateGapsTable(filteredMap);
         }
@@ -1445,7 +1129,7 @@ Object.entries(dataMap).forEach(([userId, stats]) => {
       
       document.getElementById('filterUserId').addEventListener('input', function() {
         if (document.getElementById('gapsTabContent').style.display !== 'none') {
-           applyGapsFilter();
+          applyGapsFilter();
         }
       });
       
