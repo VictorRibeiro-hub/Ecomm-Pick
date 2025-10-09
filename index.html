@@ -179,9 +179,36 @@
       position: sticky; top: 40px; background-color: #000; z-index: 2;
     }
 
-    /* Gaps */
-    .gap-same-floor td { background-color: #d4edda; }
-    .gap-cross-floor td { background-color: #f8d7da; }
+    /* Gaps – preserva as cores base */
+tr.gap-same-floor td { background-color: #d4edda !important; }
+tr.gap-cross-floor td { background-color: #f8d7da !important; }
+
+/* Virada de List ID – sem contorno */
+tr.list-change td { border: none; }
+
+/* Sem faixinha à esquerda */
+tr.list-change td:first-child { border: none; }
+
+/* Location IN/OUT em negrito + asteriscos laterais */
+td.list-change-cell {
+  font-weight: bold;
+  background: transparent !important;
+  border: none !important;
+  position: relative; /* habilita posicionamento dos pseudo-elementos */
+}
+
+td.list-change-cell::before,
+td.list-change-cell::after {
+  content: "*";
+  font-weight: bold;
+  /* opcional: ajuste fino de espaçamento */
+  margin: 0 4px;
+}
+
+td.list-change-cell::before { margin-right: 6px; }
+td.list-change-cell::after  { margin-left: 6px; }
+
+
   </style>
 </head>
 <body>
@@ -226,7 +253,7 @@
         <div class="summary-number" id="userCountLabel">0</div>
       </div>
       <div class="summary-card">
-        T. User ID Lost
+        User-equivalents Lost (≈)
         <div class="summary-number" id="userLostLabel">0.00</div>
       </div>
       <div class="summary-card">
@@ -521,6 +548,18 @@
               <td>${gapObj.sameFloor ? 'Yes' : 'No'}</td>
             `;
 
+            // >>> NOVO: destacar só Location IN/OUT quando virar o List ID
+if (gapObj.listChange) {
+  const tds = row.querySelectorAll('td');
+  // colunas: 0 Date | 1 User | 2 Location IN | 3 Location OUT | ...
+  [2, 3].forEach(i => {
+    tds[i].classList.add('list-change-cell'); // só negrito (CSS acima)
+    tds[i].title = `List ID: ${gapObj.fromList || ''} → ${gapObj.toList || ''}`;
+  });
+}
+// <<< FIM DO NOVO TRECHO
+
+
             const gapCell = row.querySelectorAll('td')[6];
             if (gapObj.sameFloor) {
               if (gapMinutes >= 7) { gapCell.style.color = '#dc3545'; gapCell.style.fontWeight = 'bold'; }
@@ -683,6 +722,7 @@ const COLS = {
   location: 12,     // M  -> From Location / Location ID
   tranDate: 19,     // T  -> Transaction Date
   tranTime: 20,     // U  -> Transaction Time
+  listId: 34,       // AI -> List ID  <<< NOVO
   dataStartRow: 2   // dados começam na linha 3 (1-based)
 };
 
@@ -731,10 +771,12 @@ function processCSV(csvText) {
     // Agrega por usuário
     sortedRows.forEach(row => {
       const userId   = (row[COLS.userId]   || '').trim();
-      const qtyRaw   = (row[COLS.qty]      || '').trim();
-      const location = (row[COLS.location] || '').trim();
-      const tDate    = (row[COLS.tranDate] || '').trim();
-      const tTime    = (row[COLS.tranTime] || '').trim();
+const qtyRaw   = (row[COLS.qty]      || '').trim();
+const location = (row[COLS.location] || '').trim();
+const tDate    = (row[COLS.tranDate] || '').trim();
+const tTime    = (row[COLS.tranTime] || '').trim();
+const listId   = (row[COLS.listId]   || '').trim(); // <<< NOVO
+
 
       // qty robusto: aceita "1", "1.0", "1,0"
       const qty = Number(qtyRaw.replace(',', '.')) || 0;
@@ -771,8 +813,9 @@ function processCSV(csvText) {
       if (qty > 1) dataMap[userId].hasMulti = true;
 
       // Eventos (para cálculo de gaps)
-      allEvents[userId].push({ time: tTime, location });
-      validEvents[userId].push({ time: tTime, location });
+      allEvents[userId].push({ time: tTime, location, listId });     // <<< NOVO
+validEvents[userId].push({ time: tTime, location, listId });   // <<< NOVO
+
 
       // In/Out time
       if (!dataMap[userId].inTime || tTime < dataMap[userId].inTime) {
@@ -798,44 +841,54 @@ function processCSV(csvText) {
     });
 
     // Cálculo de gaps com thresholds por piso (usa getFloor já existente)
-    Object.keys(validEvents).forEach(userId => {
-      const events = validEvents[userId];
-      const userAll = allEvents[userId];
+Object.keys(validEvents).forEach(userId => {
+  const events = validEvents[userId];
+  const userAll = allEvents[userId];
 
-      for (let i = 1; i < events.length; i++) {
-        const prevObj = events[i - 1];
-        const currObj = events[i];
-        const prev = prevObj.time;
-        const curr = currObj.time;
-        const diffSec = calculateSecondsDifference(prev, curr);
-        const gapHours = diffSec / 3600;
+  for (let i = 1; i < events.length; i++) {
+    const prevObj = events[i - 1];
+    const currObj = events[i];
+    const prev = prevObj.time;
+    const curr = currObj.time;
+    const diffSec = calculateSecondsDifference(prev, curr);
+    const gapHours = diffSec / 3600;
 
-        // Se existe qualquer transação intermediária entre prev e curr, não é gap “puro”
-        const intermediate = userAll.some(ev => ev.time > prev && ev.time < curr);
+    // Se existe qualquer transação intermediária entre prev e curr, não é gap “puro”
+    const intermediate = userAll.some(ev => ev.time > prev && ev.time < curr);
 
-        // Pisos
-        const prevFloor = getFloor(prevObj.location);
-        const currFloor = getFloor(currObj.location);
-        const sameFloor = prevFloor && currFloor && (prevFloor === currFloor);
+    // Pisos
+    const prevFloor = getFloor(prevObj.location);
+    const currFloor = getFloor(currObj.location);
+    const sameFloor = prevFloor && currFloor && (prevFloor === currFloor);
 
-        // Threshold: 5 min no mesmo piso, 10 min entre pisos
-        const thresholdMin = sameFloor ? 5 : 10;
-        const thresholdHours = thresholdMin / 60;
+    // NOVO: detecção de virada de List ID
+    const listChanged = (String(prevObj.listId || '').trim() !== String(currObj.listId || '').trim());
+    const fromList = prevObj.listId || '';
+    const toList   = currObj.listId || '';
 
-        if (gapHours >= thresholdHours && !intermediate) {
-          dataMap[userId].totalGaps += gapHours;
-          dataMap[userId].nGaps += 1;
-          dataMap[userId].gapsList.push({
-            gapSec: diffSec,
-            start: prev,
-            end: curr,
-            locationIn: prevObj.location,
-            locationOut: currObj.location,
-            sameFloor
-          });
-        }
-      }
-    });
+    // Threshold: 5 min no mesmo piso, 10 min entre pisos
+    const thresholdMin = sameFloor ? 5 : 10;
+    const thresholdHours = thresholdMin / 60;
+
+    if (gapHours >= thresholdHours && !intermediate) {
+      dataMap[userId].totalGaps += gapHours;
+      dataMap[userId].nGaps += 1;
+      dataMap[userId].gapsList.push({
+        gapSec: diffSec,
+        start: prev,
+        end: curr,
+        locationIn: prevObj.location,
+        locationOut: currObj.location,
+        sameFloor,
+        // NOVO: marca de virada de lista
+        listChange: listChanged,
+        fromList,
+        toList
+      });
+    }
+  }
+});
+
 
     // Total Hours + Performance por usuário
     Object.keys(dataMap).forEach(userId => {
@@ -1069,43 +1122,176 @@ function processCSV(csvText) {
         else if (performance.includes('Poor'))         poorData.push(row);
       });
       
-      const gapsHeader = ['Date','User ID','Location IN','Location OUT','In Time','Out Time','Gap Time','Gap #','Same Floor?'];
-      const gapsData = [gapsHeader.slice()];
+      const gapsHeader = [
+  'Date','User ID','Location IN','Location OUT','In Time','Out Time',
+  'Gap Time','Gap #','Same Floor?','List Change','List From','List To'
+];
+const gapsData = [gapsHeader.slice()];
+
 
       Object.entries(dataMap).forEach(([userId, stats]) => {
-        if (stats.nGaps > 0 && stats.gapsList && stats.gapsList.length > 0) {
-          stats.gapsList.forEach((gapObj, index) => {
-            const gapTimeFormatted = formatDecimalToTime(gapObj.gapSec / 3600);
-            const sameFloorFlag = gapObj.sameFloor ? 'Yes' : 'No';
-            const row = [
-              stats.date, userId,
-              gapObj.locationIn || '', gapObj.locationOut || '',
-              gapObj.start, gapObj.end,
-              gapTimeFormatted, index + 1, sameFloorFlag
-            ];
-            gapsData.push(row);
-          });
-        }
-      });
+  if (stats.nGaps > 0 && stats.gapsList && stats.gapsList.length > 0) {
+    stats.gapsList.forEach((gapObj, index) => {
+      const gapTimeFormatted = formatDecimalToTime(gapObj.gapSec / 3600);
+      const sameFloorFlag = gapObj.sameFloor ? 'Yes' : 'No';
+
+      // >>> NOVO: se virou o List ID, adiciona asteriscos no texto de Location IN/OUT
+      const locIn  = gapObj.listChange ? `*${gapObj.locationIn || ''}*`  : (gapObj.locationIn  || '');
+      const locOut = gapObj.listChange ? `*${gapObj.locationOut || ''}*` : (gapObj.locationOut || '');
+      // <<< FIM NOVO
+
+      const row = [
+  stats.date, userId,
+  // mantém os asteriscos quando houver virada
+  gapObj.listChange ? `*${gapObj.locationIn || ''}*`  : (gapObj.locationIn  || ''),
+  gapObj.listChange ? `*${gapObj.locationOut || ''}*` : (gapObj.locationOut || ''),
+  gapObj.start, gapObj.end,
+  gapTimeFormatted, index + 1, sameFloorFlag,
+  // NOVO: colunas extras para filtrar no Excel
+  gapObj.listChange ? 'Yes' : 'No',
+  gapObj.fromList || '', gapObj.toList || ''
+];
+gapsData.push(row);
+
+    });
+  }
+});
+
 
       const workbook = XLSX.utils.book_new();
-      const wsAll = XLSX.utils.aoa_to_sheet(allData);
-      const wsWellDone = XLSX.utils.aoa_to_sheet(wellDoneData);
-      const wsAlmostThere = XLSX.utils.aoa_to_sheet(almostThereData);
-      const wsPoor = XLSX.utils.aoa_to_sheet(poorData);
-      const wsGaps = XLSX.utils.aoa_to_sheet(gapsData);
+const wsAll = XLSX.utils.aoa_to_sheet(allData);
+const wsWellDone = XLSX.utils.aoa_to_sheet(wellDoneData);
+const wsAlmostThere = XLSX.utils.aoa_to_sheet(almostThereData);
+const wsPoor = XLSX.utils.aoa_to_sheet(poorData);
+const wsGaps = XLSX.utils.aoa_to_sheet(gapsData);
 
-      setFontSize(wsAll, 11); setFontSize(wsWellDone, 11);
-      setFontSize(wsAlmostThere, 11); setFontSize(wsPoor, 11);
-      setFontSize(wsGaps, 11);
+// Helper para ligar AutoFilter em qualquer sheet
+function enableAutofilter(ws) {
+  if (!ws['!ref']) return;
+  const r = XLSX.utils.decode_range(ws['!ref']);
+  ws['!autofilter'] = {
+    ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: r.e.r, c: r.e.c } })
+  };
+}
 
-      XLSX.utils.book_append_sheet(workbook, wsAll, "All Data");
-      XLSX.utils.book_append_sheet(workbook, wsWellDone, "Well Done");
-      XLSX.utils.book_append_sheet(workbook, wsAlmostThere, "Almost There");
-      XLSX.utils.book_append_sheet(workbook, wsPoor, "Poor");
-      XLSX.utils.book_append_sheet(workbook, wsGaps, "Gaps Breakdown");
+// Liga o AutoFilter em todas as abas
+enableAutofilter(wsAll);
+enableAutofilter(wsWellDone);
+enableAutofilter(wsAlmostThere);
+enableAutofilter(wsPoor);
+enableAutofilter(wsGaps);
 
-      XLSX.writeFile(workbook, "OnLine_Picking_Report.xlsx");
+// (se quiser, aqui também dá pra definir larguras de coluna, ex.: wsGaps['!cols'] = [...])
+
+// Ativa o filtro no intervalo todo
+wsGaps['!autofilter'] = {
+  ref: XLSX.utils.encode_range({
+    s: { r: 0, c: 0 },
+    e: { r: gapsData.length - 1, c: gapsHeader.length - 1 }
+  })
+};
+
+
+setFontSize(wsAll, 11); setFontSize(wsWellDone, 11);
+setFontSize(wsAlmostThere, 11); setFontSize(wsPoor, 11);
+setFontSize(wsGaps, 11);
+
+// === NOVO: forçar tipos e formatos no Excel ===
+function toExcelSerialFromHMS(str) {
+  if (!str) return 0;
+  const s = timeToSeconds(ensureTimeFormat(String(str).trim()));
+  return s / 86400; // fração de dia
+}
+function castAllSheets(ws) {
+  if (!ws['!ref']) return;
+  const r = XLSX.utils.decode_range(ws['!ref']);
+
+  // Colunas (0-based) em "All Data" e similares:
+  // 0 Date | 1 User | 2 Qty | 3 In | 4 Out | 5 Total H | 6 Prod H | 7 Performance
+  // 8 Total Gaps | 9 N. Gaps | 10 Qty. Tnx | 11 Gap vs Txn% | 12 Avg. P. Hours | 13 Pick
+  const C = {QTY:2, IN:3, OUT:4, TOT_H:5, PROD_H:6, GAPS:8, N_G:9, TXN:10, GAP_PCT:11, AVG_PH:12};
+
+  for (let row = r.s.r + 1; row <= r.e.r; row++) { // pula cabeçalho
+    // Qty (número)
+    let addr = XLSX.utils.encode_cell({r: row, c: C.QTY});
+    if (ws[addr]) { ws[addr].t = 'n'; ws[addr].v = Number(ws[addr].v) || 0; ws[addr].z = '0'; }
+
+    // In/Out time (hora do dia)
+    [C.IN, C.OUT].forEach(c => {
+      const a = XLSX.utils.encode_cell({r: row, c});
+      if (ws[a]) { ws[a].t = 'n'; ws[a].v = toExcelSerialFromHMS(ws[a].v); ws[a].z = 'hh:mm:ss'; }
+    });
+
+    // Total Hours (duração potencial >24h)
+    addr = XLSX.utils.encode_cell({r: row, c: C.TOT_H});
+    if (ws[addr]) { ws[addr].t = 'n'; ws[addr].v = toExcelSerialFromHMS(ws[addr].v); ws[addr].z = '[h]:mm:ss'; }
+
+    // Prod. Hours = qty/target (em horas) -> fração de dia
+    const aQty = XLSX.utils.encode_cell({r: row, c: C.QTY});
+    const qtyVal = (ws[aQty] && typeof ws[aQty].v === 'number') ? ws[aQty].v : Number(ws[aQty]?.v) || 0;
+    const prodSerial = (qtyVal / trackerTarget) / 24;
+    addr = XLSX.utils.encode_cell({r: row, c: C.PROD_H});
+    if (ws[addr]) { ws[addr].t = 'n'; ws[addr].v = prodSerial; ws[addr].z = '[h]:mm:ss'; }
+
+    // Total Gaps (duração >24h possível)
+    addr = XLSX.utils.encode_cell({r: row, c: C.GAPS});
+    if (ws[addr]) { ws[addr].t = 'n'; ws[addr].v = toExcelSerialFromHMS(ws[addr].v); ws[addr].z = '[h]:mm:ss'; }
+
+    // N. Gaps e Qty. Tnx (número)
+    [C.N_G, C.TXN].forEach(c => {
+      const a = XLSX.utils.encode_cell({r: row, c});
+      if (ws[a]) { ws[a].t = 'n'; ws[a].v = Number(ws[a].v) || 0; ws[a].z = '0'; }
+    });
+
+    // Gap vs Txn% = nGaps / txnCount
+    const aNG = XLSX.utils.encode_cell({r: row, c: C.N_G});
+    const aTX = XLSX.utils.encode_cell({r: row, c: C.TXN});
+    const nG = Number(ws[aNG]?.v) || 0, tx = Number(ws[aTX]?.v) || 0;
+    const pct = tx > 0 ? (nG / tx) : 0;
+    addr = XLSX.utils.encode_cell({r: row, c: C.GAP_PCT});
+    if (ws[addr]) { ws[addr].t = 'n'; ws[addr].v = pct; ws[addr].z = '0.00%'; }
+
+    // Avg. P. Hours = Qty / (TotalHours em horas)
+    const aTH = XLSX.utils.encode_cell({r: row, c: C.TOT_H});
+    const totHours = (ws[aTH]?.v || 0) * 24; // serial -> horas
+    const avgPH = totHours > 0 ? (qtyVal / totHours) : 0;
+    addr = XLSX.utils.encode_cell({r: row, c: C.AVG_PH});
+    if (ws[addr]) { ws[addr].t = 'n'; ws[addr].v = avgPH; ws[addr].z = '0.00'; }
+  }
+}
+
+// Gaps Breakdown: 0 Date | 1 User | 2 Loc IN | 3 Loc OUT | 4 In | 5 Out | 6 Gap Time | 7 Gap # | 8 Same Floor?
+function castGapsSheet(ws) {
+  if (!ws['!ref']) return;
+  const r = XLSX.utils.decode_range(ws['!ref']);
+  for (let row = r.s.r + 1; row <= r.e.r; row++) {
+    // In/Out time
+    [4,5].forEach(c => {
+      const a = XLSX.utils.encode_cell({r: row, c});
+      if (ws[a]) { ws[a].t = 'n'; ws[a].v = toExcelSerialFromHMS(ws[a].v); ws[a].z = 'hh:mm:ss'; }
+    });
+    // Gap Time (duração)
+    let addr = XLSX.utils.encode_cell({r: row, c: 6});
+    if (ws[addr]) { ws[addr].t = 'n'; ws[addr].v = toExcelSerialFromHMS(ws[addr].v); ws[addr].z = '[h]:mm:ss'; }
+    // Gap #
+    addr = XLSX.utils.encode_cell({r: row, c: 7});
+    if (ws[addr]) { ws[addr].t = 'n'; ws[addr].v = Number(ws[addr].v) || 0; ws[addr].z = '0'; }
+  }
+}
+
+// Aplicar nos 4 sheets principais + Gaps
+[wsAll, wsWellDone, wsAlmostThere, wsPoor].forEach(castAllSheets);
+castGapsSheet(wsGaps);
+
+// ============================
+XLSX.utils.book_append_sheet(workbook, wsAll, "All Data");
+XLSX.utils.book_append_sheet(workbook, wsWellDone, "Well Done");
+XLSX.utils.book_append_sheet(workbook, wsAlmostThere, "Almost There");
+XLSX.utils.book_append_sheet(workbook, wsPoor, "Poor");
+XLSX.utils.book_append_sheet(workbook, wsGaps, "Gaps Breakdown");
+
+XLSX.writeFile(workbook, "OnLine_Picking_Report.xlsx");
+
     }
   </script>
 
