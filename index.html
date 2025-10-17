@@ -792,7 +792,7 @@ function processCSV(csvText) {
       return tA.localeCompare(tB);
     });
 
-    // Agrega por usuário
+    // Agrega por users
     sortedRows.forEach(row => {
       const userId   = (row[COLS.userId]   || '').trim();
 const qtyRaw   = (row[COLS.qty]      || '').trim();
@@ -852,7 +852,7 @@ validEvents[userId].push({ time: tTime, location, listId });   // <<< NOVO
       }
     });
 
-    // Dedup por horário e ordena tempos por usuário
+    // Dedup por horário e ordena tempos por users
     Object.keys(allEvents).forEach(userId => {
       allEvents[userId] = allEvents[userId]
         .filter((obj, i, arr) => arr.findIndex(o => o.time === obj.time) === i)
@@ -914,7 +914,7 @@ Object.keys(validEvents).forEach(userId => {
 });
 
 
-    // Total Hours + Performance por usuário
+    // Total Hours + Performance por users
     Object.keys(dataMap).forEach(userId => {
       const d = dataMap[userId];
       if (!d.inTime || !d.outTime) {
@@ -1092,7 +1092,7 @@ Object.keys(validEvents).forEach(userId => {
         data: {
           labels,
           datasets: [{
-            label: 'Usuários',
+            label: 'Users',
             data: dataCounts,
             backgroundColor: ['#28a745', '#ff8c00', '#dc3545', '#6c757d']
           }]
@@ -1350,3 +1350,4 @@ XLSX.writeFile(workbook, "OnLine_Picking_Report.xlsx");
   </script>
 </body>
 </html>
+
