@@ -281,9 +281,17 @@ td.list-change-cell::after  { margin-left: 6px; }
       </div>
 
       <div class="summary-card">
-        Avg. Performance
-        <div class="summary-number" id="avgPerformanceLabel">0.00%</div>
-      </div>
+  Avg. Performance
+  <div class="summary-number" id="avgPerformanceLabel">0.00%</div>
+</div>
+
+<!-- NOVO: mediana da performance -->
+<div class="summary-card">
+  Performance — Med. (IQR)
+  <div class="summary-number" id="medianPerformanceLabel">0.00%</div>
+</div>
+
+
     </nav>
 
     <!-- Main Content -->
@@ -611,13 +619,29 @@ document.getElementById('userLostLabel').textContent = lostDecimal.toFixed(2);
   document.getElementById('avgPickedLabel').textContent = avgPickedPerHour.toFixed(0);
 
   let sumPerformance = 0;
-  Object.values(dataMap).forEach(stats => {
-    const hours = timeToSeconds(stats.totalHours) / 3600;
-    const perf = hours > 0 ? (stats.qty / (hours * trackerTarget)) * 100 : 0;
-    sumPerformance += perf;
-  });
-  const avgPerformance = totalUsers > 0 ? (sumPerformance / totalUsers) : 0;
-  document.getElementById('avgPerformanceLabel').textContent = avgPerformance.toFixed(2) + '%';
+const perfValues = []; // <- NOVO: coletar para mediana
+
+Object.values(dataMap).forEach(stats => {
+  const hours = timeToSeconds(stats.totalHours) / 3600;
+  const perf = hours > 0 ? (stats.qty / (hours * trackerTarget)) * 100 : 0;
+  sumPerformance += perf;
+  perfValues.push(perf); // <- NOVO
+});
+
+const avgPerformance = totalUsers > 0 ? (sumPerformance / totalUsers) : 0;
+document.getElementById('avgPerformanceLabel').textContent = avgPerformance.toFixed(2) + '%';
+
+// NOVO: mediana
+function median(arr){
+  if (!arr || arr.length === 0) return 0;
+  const s = [...arr].sort((a,b) => a - b);
+  const mid = Math.floor(s.length / 2);
+  return (s.length % 2 === 0) ? (s[mid - 1] + s[mid]) / 2 : s[mid];
+}
+const medianPerformance = median(perfValues);
+const medianEl = document.getElementById('medianPerformanceLabel');
+if (medianEl) medianEl.textContent = medianPerformance.toFixed(2) + '%';
+
 }
 
 
@@ -1068,7 +1092,7 @@ Object.keys(validEvents).forEach(userId => {
         data: {
           labels,
           datasets: [{
-            label: 'Users',
+            label: 'Usuários',
             data: dataCounts,
             backgroundColor: ['#28a745', '#ff8c00', '#dc3545', '#6c757d']
           }]
