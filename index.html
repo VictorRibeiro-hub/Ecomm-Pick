@@ -202,12 +202,11 @@
       flex-direction: column;
     }
     .content-area { 
-  padding: 20px 20px 80px;  /* top | right | bottom (AUMENTADO) | left */
+  padding: 20px 20px 60px;  /* top | right | bottom (maior) | left */
   flex: 1;
   overflow-y: auto;
   background-color: #fff;
 }
-
 
 
     /* Tabelas */
@@ -380,14 +379,13 @@ canvas#affAvgPerfChart, canvas#affBucketChart { width:100% !important; height:36
 }
 .tab-btn:focus-visible .btn-text { opacity:1; max-width:80px; }
 .tab-btn:focus-visible { outline: 2px solid rgba(255,255,255,0.35); border-radius:8px; }
-/* Espaço extra específico para as tabelas do Dashboard */
-#dashboardTabContent {
-  padding-bottom: 40px;
+
+/* 🔥 NOVO — Espaçador no final do Dashboard para não cortar a última linha */
+.dashboard-bottom-spacer {
+  height: 80px;    /* aumenta se quiser ainda mais espaço */
+  flex-shrink: 0;
 }
 
-.dashboard-tables {
-  margin-bottom: 40px;
-}
 
 
   </style>
@@ -585,7 +583,7 @@ canvas#affAvgPerfChart, canvas#affBucketChart { width:100% !important; height:36
             </div>
           </div>
 
-          <div class="dashboard-tables" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="dashboard-tables" style="display: flex; gap: 20px; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 200px;">
               <h4>Top 5 Performance Scores</h4>
               <table id="topPerformersTable" class="dashboard-table">
@@ -608,9 +606,14 @@ canvas#affAvgPerfChart, canvas#affBucketChart { width:100% !important; height:36
               </table>
             </div>
           </div>
+
+          <!-- ESPAÇADOR PARA NÃO CORTAR A ÚLTIMA LINHA NO NETLIFY -->
+          <div class="dashboard-bottom-spacer"></div>
+
         </div>
 <!-- Affiliation Summary (AGY × CORE) -->
 <div id="affiliationTabContent" class="allow-copy" style="display:none;">
+
   <div class="aff-wrap">
     <div class="aff-header">
   <div class="aff-title">
