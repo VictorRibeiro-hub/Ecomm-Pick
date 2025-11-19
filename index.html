@@ -201,7 +201,13 @@
       display: flex;
       flex-direction: column;
     }
-    .content-area { padding: 20px; flex: 1; overflow-y: auto; background-color: #fff; }
+    .content-area { 
+  padding: 20px 20px 60px;  /* top | right | bottom (maior) | left */
+  flex: 1;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
 
     /* Tabelas */
     table {
@@ -1901,10 +1907,20 @@ window.affBucketChart = new Chart(bucketCtx, {
     return;
   }
 
- const dataMap = JSON.parse(savedData);
-populateFilterOptions(dataMap);
-rebuildUI(dataMap, { deferCharts: false }); // na carga inicial podes renderizar tudo já
+  const dataMap = JSON.parse(savedData);
+  populateFilterOptions(dataMap);
 
+  // 🔹 NOVO: resetar o cache filtrado para "sem filtro" (dataset completo)
+  let ts = localStorage.getItem('onlinePickData_ts');
+  if (!ts) {
+    ts = String(Date.now());
+    localStorage.setItem('onlinePickData_ts', ts);
+  }
+  sessionStorage.setItem('onlinePickDataFiltered', JSON.stringify(dataMap));
+  sessionStorage.setItem('onlinePickDataFiltered_ts', ts);
+
+  // reconstrói tudo com os dados completos
+  rebuildUI(dataMap, { deferCharts: false });
 
   // NOVO: toggle do Summary
   const affToggle = document.getElementById('affUseFilterToggle');
@@ -1923,7 +1939,6 @@ rebuildUI(dataMap, { deferCharts: false }); // na carga inicial podes renderizar
 
   setActiveTab('homeTabBtn');
 };
-
 
 
     function downloadExcelReport() {
