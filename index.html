@@ -93,13 +93,13 @@
 
     /* Container with Sidebar and Main Content */
     .container {
-      display: flex;
-      position: absolute;
-      top: 70px;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
+  display: flex;
+  /* em vez de absolute + top/bottom, usamos margin-top */
+  margin-top: 70px;                 /* empurra abaixo da top-bar */
+  min-height: calc(100vh - 70px);   /* ocupa pelo menos a altura útil */
+  /* remove: position, top, bottom, left, right */
+}
+
 
     /* Sidebar Styling */
     .sidebar {
@@ -202,12 +202,12 @@
       flex-direction: column;
     }
     .content-area { 
-  padding: 20px 20px 60px;  /* top | right | bottom (maior) | left */
+  padding: 20px 20px 60px;
   flex: 1;
-  overflow-y: auto;
+  /* removemos o overflow interno */
+  /* overflow-y: auto;  <-- APAGA essa linha */
   background-color: #fff;
 }
-
 
     /* Tabelas */
     table {
@@ -2278,4 +2278,5 @@ document.addEventListener('keydown', e => {
 
 </body>
 </html>
+
 
